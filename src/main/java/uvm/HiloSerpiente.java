@@ -3,7 +3,7 @@ import javax.swing.*;
 import java.awt.Color;
 
 public class HiloSerpiente extends Thread {
-    private final JLabel[][] matriz;
+    private final JLabel[][] matriz; 
     private final Object lock = new Object();
     private boolean pausado = false;
     private boolean terminado = false;
@@ -45,7 +45,7 @@ public class HiloSerpiente extends Thread {
         }
     }
 
-    // Bloquea mientras esté en pausa. Devuelve false si el hilo debe terminar.
+    // Bloquea mientras esté en pausa. 
     private boolean esperarSiPausado() {
         synchronized (lock) {
             while (pausado && !terminado) {
