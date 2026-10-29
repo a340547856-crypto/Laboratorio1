@@ -250,20 +250,28 @@ public class VentanaMatrizHilos extends JFrame {
         });
     }
 
-    // -----------------------------------------------------------------
-    // Métodos privados para manejo de eventos (Serpiente)
-    // -----------------------------------------------------------------
-    private void iniciarSerpiente() {
-        System.out.println("Evento: Iniciar Serpiente");
+// -----------------------------------------------------------------
+// Métodos privados para manejo de eventos (Serpiente) // ANGEL ARVIZU
+// -----------------------------------------------------------------
+private void iniciarSerpiente() {
+    if (hser == null || !hser.isAlive()) {
+        hser = new HiloSerpiente(matriz);
+        hser.start();
+    } else {
+        hser.reanudar();
     }
+}
 
-    private void pausarSerpiente() {
-        System.out.println("Evento: Pausar Serpiente");
-    }
+private void pausarSerpiente() {
+    if (hser != null) hser.pausar();
+}
 
-    private void terminarSerpiente() {
-        System.out.println("Evento: Terminar Serpiente");
+private void terminarSerpiente() {
+    if (hser != null) {
+        hser.terminar();
+        hser = null;
     }
+}
 
     // -----------------------------------------------------------------
     // Métodos privados para manejo de eventos (Cazador)
