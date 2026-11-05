@@ -294,11 +294,11 @@ private void terminarSerpiente() {
     private void iniciarRebotador() {
         System.out.println("Evento: Iniciar Rebotador");
         if (hreb == null || !hreb.isAlive()) {
-            // No existe o ya terminó: se crea un hilo nuevo y se inicia
+
             hreb = new HiloRebotador(matriz);
             hreb.start();
         } else {
-            // Ya está corriendo (posiblemente en pausa): se reanuda
+
             hreb.reanudar();
         }
     }
