@@ -251,28 +251,19 @@ public class VentanaMatrizHilos extends JFrame {
     }
 
 // -----------------------------------------------------------------
-// Métodos privados para manejo de eventos (Serpiente) // ANGEL ARVIZU
+// Métodos privados para manejo de eventos (Serpiente) 
 // -----------------------------------------------------------------
 private void iniciarSerpiente() {
-    if (hser == null || !hser.isAlive()) {
-        hser = new HiloSerpiente(matriz);
-        hser.start();
-    } else {
-        hser.reanudar();
-    }
+    System.out.println("Evento: Iniciar Serpiente");
 }
 
 private void pausarSerpiente() {
-    if (hser != null) hser.pausar();
+    System.out.println("Evento: Pausar Serpiente");
 }
 
 private void terminarSerpiente() {
-    if (hser != null) {
-        hser.terminar();
-        hser = null;
-    }
+    System.out.println("Evento: Terminar Serpiente");
 }
-
     // -----------------------------------------------------------------
     // Métodos privados para manejo de eventos (Cazador)
     // -----------------------------------------------------------------
@@ -288,36 +279,20 @@ private void terminarSerpiente() {
         System.out.println("Evento: Terminar Cazador");
     }
 
-    // -----------------------------------------------------------------
-    // Métodos privados para manejo de eventos (Rebotador)
-    // -----------------------------------------------------------------
-    private void iniciarRebotador() {
-        System.out.println("Evento: Iniciar Rebotador");
-        if (hreb == null || !hreb.isAlive()) {
+// -----------------------------------------------------------------
+// Métodos privados para manejo de eventos (Rebotador)
+// -----------------------------------------------------------------
+private void iniciarRebotador() {
+    System.out.println("Evento: Iniciar Rebotador");
+}
 
-            hreb = new HiloRebotador(matriz);
-            hreb.start();
-        } else {
+private void pausarRebotador() {
+    System.out.println("Evento: Pausar Rebotador");
+}
 
-            hreb.reanudar();
-        }
-    }
- 
-    private void pausarRebotador() {
-        System.out.println("Evento: Pausar Rebotador");
-        if (hreb != null && hreb.isAlive()) {
-            hreb.pausar();
-        }
-    }
- 
-    private void terminarRebotador() {
-        System.out.println("Evento: Terminar Rebotador");
-        if (hreb != null) {
-            hreb.terminar();
-            hreb = null; // Permite crear un hilo nuevo con Iniciar
-        }
-    }
- 
+private void terminarRebotador() {
+    System.out.println("Evento: Terminar Rebotador");
+}
     // -----------------------------------------------------------------
     // Métodos privados para manejo de eventos (Clima)
     // -----------------------------------------------------------------
