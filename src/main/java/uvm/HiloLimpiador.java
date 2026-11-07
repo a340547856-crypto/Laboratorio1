@@ -1,13 +1,18 @@
 package uvm;
 
 import java.awt.Color;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 
 public class HiloLimpiador extends Thread {
 
+    /* Logger para mostrar mensajes en consola */
+    private static final Logger LOGGER = Logger.getLogger(HiloLimpiador.class.getName());
+
     /* Variable compartida: cuántas celdas ha limpiado en total.
-       static synchronized para que cualquier hilo la lea sin choques */
+       Es static y synchronized para que cualquier hilo la lea sin choques */
     private static int limpiadas = 0;
 
     public static synchronized void sumarLimpiadas(int n) {
@@ -26,7 +31,7 @@ public class HiloLimpiador extends Thread {
         this.matriz = matriz;
     }
 
-    /* Pausa o reanuda; notifyAll() despierta al hilo si estaba en wait() */
+    /* Pausa o reanuda el hilo y despierta a los hilos que esperan */
     public synchronized void alternarPausa() {
         pausado = !pausado;
         notifyAll();
@@ -37,7 +42,8 @@ public class HiloLimpiador extends Thread {
         notifyAll();
     }
 
-    /* Si está en pausa se duerme con wait(); devuelve true si debe terminar */
+    /* Si está en pausa, el hilo se duerme hasta que lo despierten.
+       Devuelve true si debe terminar */
     private synchronized boolean debeTerminar() throws InterruptedException {
         while (pausado && !terminado) {
             wait();
@@ -45,7 +51,7 @@ public class HiloLimpiador extends Thread {
         return terminado;
     }
 
-    /* Limpia una fila con invokeLater: cada celda que no sea "-" queda vacía */
+    /* Limpia una fila usando invokeLater: cada celda que no sea "-" queda vacía */
     private void limpiarFila(int fila) {
         SwingUtilities.invokeLater(() -> {
             int cuenta = 0;
@@ -56,7 +62,7 @@ public class HiloLimpiador extends Thread {
                     cuenta++;
                 }
             }
-            sumarLimpiadas(cuenta);  // variable compartida
+            sumarLimpiadas(cuenta);
         });
     }
 
@@ -66,12 +72,15 @@ public class HiloLimpiador extends Thread {
         try {
             while (!debeTerminar()) {
                 limpiarFila(fila);
-                System.out.println("Limpiando fila " + fila);
-                fila = (fila + 1) % 15;  // al llegar a la última fila vuelve a la primera
+                LOGGER.log(Level.INFO, "Limpiando fila {0}", fila);
+                /* Al llegar a la última fila vuelve a la primera */
+                fila = (fila + 1) % 15;
                 sleep(500);
             }
         } catch (InterruptedException e) {
-            System.out.println("Limpiador interrumpido");
+            /* Vuelve a marcar la interrupción, como pide Sonar */
+            Thread.currentThread().interrupt();
+            LOGGER.info("Limpiador interrumpido");
         }
     }
 }
