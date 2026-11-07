@@ -251,35 +251,53 @@ public class VentanaMatrizHilos extends JFrame {
     }
 
     // -----------------------------------------------------------------
-    // Métodos privados para manejo de eventos (Serpiente)
+    // Métodos privados para manejo de eventos (Serpiente) //LUIS ANGEL ARVIZU RAMIREZ
     // -----------------------------------------------------------------
-    private void iniciarSerpiente() {
-        System.out.println("Evento: Iniciar Serpiente");
+     private void iniciarSerpiente() {
+        /* Solo crea un hilo nuevo si no hay uno corriendo */
+        if (hser == null || !hser.isAlive()) {
+            hser = new HiloSerpiente(matriz);
+            hser.start();
+        }
     }
 
     private void pausarSerpiente() {
-        System.out.println("Evento: Pausar Serpiente");
+        /* Pausa si estaba corriendo, o reanuda si estaba en pausa */
+        if (hser != null) {
+            hser.alternarPausa();
+        }
     }
 
     private void terminarSerpiente() {
-        System.out.println("Evento: Terminar Serpiente");
+        if (hser != null) {
+            hser.terminar();
+            hser = null;
+        }
     }
-
     // -----------------------------------------------------------------
-    // Métodos privados para manejo de eventos (Cazador)
+    // Métodos privados para manejo de eventos (Cazador) LUIS ANGEL ARVIZU RAMIREZ
     // -----------------------------------------------------------------
-    private void iniciarCazador() {
-        System.out.println("Evento: Iniciar Cazador");
+       private void iniciarCazador() {
+        /* Solo crea un hilo nuevo si no hay uno corriendo */
+        if (hcaz == null || !hcaz.isAlive()) {
+            hcaz = new HiloCazador(matriz);
+            hcaz.start();
+        }
     }
 
     private void pausarCazador() {
-        System.out.println("Evento: Pausar Cazador");
+        /* Pausa si estaba corriendo, o reanuda si estaba en pausa */
+        if (hcaz != null) {
+            hcaz.alternarPausa();
+        }
     }
 
     private void terminarCazador() {
-        System.out.println("Evento: Terminar Cazador");
+        if (hcaz != null) {
+            hcaz.terminar();
+            hcaz = null;
+        }
     }
-
     // -----------------------------------------------------------------
     // Métodos privados para manejo de eventos (Rebotador)
     // -----------------------------------------------------------------
@@ -335,21 +353,25 @@ private void terminarClima() {
     // -----------------------------------------------------------------
     // Métodos privados para manejo de eventos (Limpiador)
     // -----------------------------------------------------------------
-    private void iniciarLimpiador() {
-        System.out.println("Evento: Iniciar Limpiador");
+ private void iniciarLimpiador() {
+    /* Solo crea un hilo nuevo si no hay uno corriendo */   
+    if (hlim == null || !hlim.isAlive()) {
+        hlim = new HiloLimpiador(matriz);
+        hlim.start();
     }
+}
 
-    private void pausarLimpiador() {
-        System.out.println("Evento: Pausar Limpiador");
+private void pausarLimpiador() {
+    /* Pausa si estaba corriendo, o reanuda si estaba en pausa */
+    if (hlim != null) {
+        hlim.alternarPausa();
     }
+}
 
-    private void terminarLimpiador() {
-        System.out.println("Evento: Terminar Limpiador");
+private void terminarLimpiador() {
+    if (hlim != null) {
+        hlim.terminar();
+        hlim = null;
     }
-
-    // Métodos auxiliares para acceso de los estudiantes
-    public JLabel[][] getMatrizLabels() {
-        return matriz;
-    }
-
+}
 }
