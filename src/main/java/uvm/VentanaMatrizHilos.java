@@ -250,83 +250,87 @@ public class VentanaMatrizHilos extends JFrame {
         });
     }
 
-// -----------------------------------------------------------------
-// Métodos privados para manejo de eventos (Serpiente) //LUIS ANGEL ARVIZU RAMIREZ
-// -----------------------------------------------------------------
-private void iniciarSerpiente() {
-    /* Solo crea un hilo nuevo si no hay uno corriendo */
-    if (hser == null || !hser.isAlive()) {
-        hser = new HiloSerpiente(matriz);
-        hser.start();
+    // -----------------------------------------------------------------
+    // Métodos privados para manejo de eventos (Serpiente)
+    // -----------------------------------------------------------------
+    private void iniciarSerpiente() {
+        System.out.println("Evento: Iniciar Serpiente");
     }
-}
 
-private void pausarSerpiente() {
-    /* Pausa si estaba corriendo, o reanuda si estaba en pausa */
-    if (hser != null) {
-        hser.alternarPausa();
+    private void pausarSerpiente() {
+        System.out.println("Evento: Pausar Serpiente");
     }
-}
 
-private void terminarSerpiente() {
-    if (hser != null) {
-        hser.terminar();
-        hser = null;
+    private void terminarSerpiente() {
+        System.out.println("Evento: Terminar Serpiente");
     }
-}
+
     // -----------------------------------------------------------------
     // Métodos privados para manejo de eventos (Cazador)
     // -----------------------------------------------------------------
-  private void iniciarCazador() {
-    /* Solo crea un hilo nuevo si no hay uno corriendo */
-    if (hcaz == null || !hcaz.isAlive()) {
-        hcaz = new HiloCazador(matriz);
-        hcaz.start();
+    private void iniciarCazador() {
+        System.out.println("Evento: Iniciar Cazador");
     }
-}
 
-private void pausarCazador() {
-    /* Pausa si estaba corriendo, o reanuda si estaba en pausa */
-    if (hcaz != null) {
-        hcaz.alternarPausa();
+    private void pausarCazador() {
+        System.out.println("Evento: Pausar Cazador");
     }
-}
 
-private void terminarCazador() {
-    if (hcaz != null) {
-        hcaz.terminar();
-        hcaz = null;
+    private void terminarCazador() {
+        System.out.println("Evento: Terminar Cazador");
     }
-}
 
-// -----------------------------------------------------------------
-// Métodos privados para manejo de eventos (Rebotador)
-// -----------------------------------------------------------------
+    // -----------------------------------------------------------------
+    // Métodos privados para manejo de eventos (Rebotador)
+    // -----------------------------------------------------------------
 private void iniciarRebotador() {
-    System.out.println("Evento: Iniciar Rebotador");
+    /* Solo crea un hilo nuevo si no hay uno corriendo */
+    if (hreb == null || !hreb.isAlive()) {
+        hreb = new HiloRebotador(matriz);
+        hreb.start();
+    }
 }
-
+ 
 private void pausarRebotador() {
-    System.out.println("Evento: Pausar Rebotador");
+    /* Pausa si estaba corriendo, o reanuda si estaba en pausa */
+    if (hreb != null) {
+        hreb.alternarPausa();
+    }
+}
+ 
+private void terminarRebotador() {
+    if (hreb != null) {
+        hreb.terminar();
+        hreb = null;
+    }
 }
 
-private void terminarRebotador() {
-    System.out.println("Evento: Terminar Rebotador");
-}
+ 
     // -----------------------------------------------------------------
     // Métodos privados para manejo de eventos (Clima)
     // -----------------------------------------------------------------
-    private void iniciarClima() {
-        System.out.println("Evento: Iniciar Clima");
+private void iniciarClima() {
+    /* Solo crea un hilo nuevo si no hay uno corriendo */
+    if (hcli == null || !hcli.isAlive()) {
+        hcli = new HiloClima(matriz);
+        hcli.start();
     }
+}
+ 
+private void pausarClima() {
+    /* Pausa si estaba corriendo, o reanuda si estaba en pausa */
+    if (hcli != null) {
+        hcli.alternarPausa();
+    }
+}
+ 
+private void terminarClima() {
+    if (hcli != null) {
+        hcli.terminar();
+        hcli = null;
+    }
+}
 
-    private void pausarClima() {
-        System.out.println("Evento: Pausar Clima");
-    }
-
-    private void terminarClima() {
-        System.out.println("Evento: Terminar Clima");
-    }
 
     // -----------------------------------------------------------------
     // Métodos privados para manejo de eventos (Limpiador)
