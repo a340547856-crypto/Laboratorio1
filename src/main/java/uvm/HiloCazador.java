@@ -1,8 +1,13 @@
 package uvm;
 import java.awt.Color;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 public class HiloCazador extends Thread {
+    /* Logger: reemplaza al System.out para mostrar mensajes */
+    private static final Logger LOGGER = Logger.getLogger(HiloCazador.class.getName());
+
     /* Variable compartida: cuántas veces ha atrapado a la serpiente */
     private static int capturas = 0;
     public static synchronized void sumarCaptura() {
@@ -65,7 +70,7 @@ public class HiloCazador extends Thread {
                     /* Si la alcanzó, cuenta la captura y reaparece en la esquina */
                     if (fila == filaS && col == colS) {
                         sumarCaptura();
-                        System.out.println("Capturas: " + getCapturas());
+                        LOGGER.log(Level.INFO, "Capturas: {0}", getCapturas());
                         fila = 14;
                         col = 14;
                     }
@@ -74,7 +79,8 @@ public class HiloCazador extends Thread {
                 sleep(150);
             }
         } catch (InterruptedException e) {
-            System.out.println("Cazador interrumpido");
+            LOGGER.info("Cazador interrumpido");
+            Thread.currentThread().interrupt();  // vuelve a marcar la interrupción
         }
         dibujar(fila, col, "-", Color.WHITE);  // borra su última posición
     }

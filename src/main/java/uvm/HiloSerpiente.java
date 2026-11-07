@@ -1,8 +1,12 @@
 package uvm;
 import java.awt.Color;
+import java.util.logging.Logger;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 public class HiloSerpiente extends Thread {
+    /* Logger: reemplaza al System.out para mostrar mensajes */
+    private static final Logger LOGGER = Logger.getLogger(HiloSerpiente.class.getName());
+
     /* Variables compartidas: static synchronized para que cualquier hilo las lea sin choques */
     private static int posSerpiente = 0;
     private static int pasosSerpiente = 0;
@@ -64,7 +68,8 @@ public class HiloSerpiente extends Thread {
                 sleep(200);
             }
         } catch (InterruptedException e) {
-            System.out.println("Serpiente interrumpida");
+            LOGGER.info("Serpiente interrumpida");
+            Thread.currentThread().interrupt();  // vuelve a marcar la interrupción
         }
 
         /* Al terminar, borra las 3 celdas que quedaron pintadas */

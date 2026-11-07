@@ -5,11 +5,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class VentanaMatrizHilos extends JFrame {
-    HiloCazador hcaz;
-    HiloClima hcli;
-    HiloLimpiador hlim;
-    HiloRebotador hreb;
-    HiloSerpiente hser;
+
+    /* Textos que se repiten en los botones */
+    private static final String TXT_INICIAR = "Iniciar";
+    private static final String TXT_PAUSA = "Pausa";
+    private static final String TXT_TERMINAR = "Terminar";
+
+    private transient HiloCazador hcaz;
+    private transient HiloClima hcli;
+    private transient HiloLimpiador hlim;
+    private transient HiloRebotador hreb;
+    private transient HiloSerpiente hser;
 
     // Matriz de 15x15 JLabels (Recurso Compartido)
     private JLabel[][] matriz = new JLabel[15][15];
@@ -43,8 +49,8 @@ public class VentanaMatrizHilos extends JFrame {
         super("Práctica de Concurrencia - Matriz Compartida");
         inicializarGUI();
         asociarEventos();
-        
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         pack();
         setLocationRelativeTo(null); // Centrar en pantalla
     }
@@ -57,7 +63,7 @@ public class VentanaMatrizHilos extends JFrame {
         // -----------------------------------------------------------------
         JPanel panelMatriz = new JPanel(new GridLayout(15, 15, 2, 2));
         panelMatriz.setBorder(BorderFactory.createTitledBorder("Matriz Compartida (15x15)"));
-        
+
         for (int fila = 0; fila < 15; fila++) {
             for (int col = 0; col < 15; col++) {
                 JLabel lbl = new JLabel("-", SwingConstants.CENTER);
@@ -65,7 +71,7 @@ public class VentanaMatrizHilos extends JFrame {
                 lbl.setBackground(Color.WHITE);
                 lbl.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
                 lbl.setFont(new Font("Monospaced", Font.BOLD, 18));
-                
+
                 matriz[fila][col] = lbl;
                 panelMatriz.add(lbl);
             }
@@ -80,9 +86,9 @@ public class VentanaMatrizHilos extends JFrame {
         // Subpanel Serpiente
         JPanel panelSerpiente = new JPanel(new FlowLayout());
         panelSerpiente.setBorder(BorderFactory.createTitledBorder("Hilo Serpiente"));
-        btIniciarS = new JButton("Iniciar");
-        btPausaS = new JButton("Pausa");
-        btTerminarS = new JButton("Terminar");
+        btIniciarS = new JButton(TXT_INICIAR);
+        btPausaS = new JButton(TXT_PAUSA);
+        btTerminarS = new JButton(TXT_TERMINAR);
         panelSerpiente.add(btIniciarS);
         panelSerpiente.add(btPausaS);
         panelSerpiente.add(btTerminarS);
@@ -90,9 +96,9 @@ public class VentanaMatrizHilos extends JFrame {
         // Subpanel Cazador
         JPanel panelCazador = new JPanel(new FlowLayout());
         panelCazador.setBorder(BorderFactory.createTitledBorder("Hilo Cazador"));
-        btIniciarC = new JButton("Iniciar");
-        btPausaC = new JButton("Pausa");
-        btTerminarC = new JButton("Terminar");
+        btIniciarC = new JButton(TXT_INICIAR);
+        btPausaC = new JButton(TXT_PAUSA);
+        btTerminarC = new JButton(TXT_TERMINAR);
         panelCazador.add(btIniciarC);
         panelCazador.add(btPausaC);
         panelCazador.add(btTerminarC);
@@ -109,9 +115,9 @@ public class VentanaMatrizHilos extends JFrame {
         // Subpanel Rebotador
         JPanel panelRebotador = new JPanel(new FlowLayout());
         panelRebotador.setBorder(BorderFactory.createTitledBorder("Hilo Rebotador"));
-        btIniciarR = new JButton("Iniciar");
-        btPausaR = new JButton("Pausa");
-        btTerminarR = new JButton("Terminar");
+        btIniciarR = new JButton(TXT_INICIAR);
+        btPausaR = new JButton(TXT_PAUSA);
+        btTerminarR = new JButton(TXT_TERMINAR);
         panelRebotador.add(btIniciarR);
         panelRebotador.add(btPausaR);
         panelRebotador.add(btTerminarR);
@@ -119,9 +125,9 @@ public class VentanaMatrizHilos extends JFrame {
         // Subpanel Clima
         JPanel panelClima = new JPanel(new FlowLayout());
         panelClima.setBorder(BorderFactory.createTitledBorder("Hilo Clima"));
-        btIniciarCl = new JButton("Iniciar");
-        btPausaCl = new JButton("Pausa");
-        btTerminarCl = new JButton("Terminar");
+        btIniciarCl = new JButton(TXT_INICIAR);
+        btPausaCl = new JButton(TXT_PAUSA);
+        btTerminarCl = new JButton(TXT_TERMINAR);
         panelClima.add(btIniciarCl);
         panelClima.add(btPausaCl);
         panelClima.add(btTerminarCl);
@@ -135,10 +141,10 @@ public class VentanaMatrizHilos extends JFrame {
         // -----------------------------------------------------------------
         JPanel panelLimpiador = new JPanel(new GridLayout(3, 1, 5, 5));
         panelLimpiador.setBorder(BorderFactory.createTitledBorder("Limpiador"));
-        btIniciarL = new JButton("Iniciar");
-        btPausaL = new JButton("Pausa");
-        btTerminarL = new JButton("Terminar");
-        
+        btIniciarL = new JButton(TXT_INICIAR);
+        btPausaL = new JButton(TXT_PAUSA);
+        btTerminarL = new JButton(TXT_TERMINAR);
+
         panelLimpiador.add(btIniciarL);
         panelLimpiador.add(btPausaL);
         panelLimpiador.add(btTerminarL);
@@ -149,45 +155,15 @@ public class VentanaMatrizHilos extends JFrame {
     }
 
     private void asociarEventos() {
-        // Eventos Hilo Serpiente
-        btIniciarS.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                iniciarSerpiente();
-            }
-        });
-        btPausaS.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                pausarSerpiente();
-            }
-        });
-        btTerminarS.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                terminarSerpiente();
-            }
-        });
+        // Eventos Hilo Serpiente (con lambda)
+        btIniciarS.addActionListener(e -> iniciarSerpiente());
+        btPausaS.addActionListener(e -> pausarSerpiente());
+        btTerminarS.addActionListener(e -> terminarSerpiente());
 
-        // Eventos Hilo Cazador
-        btIniciarC.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                iniciarCazador();
-            }
-        });
-        btPausaC.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                pausarCazador();
-            }
-        });
-        btTerminarC.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                terminarCazador();
-            }
-        });
+        // Eventos Hilo Cazador (con lambda)
+        btIniciarC.addActionListener(e -> iniciarCazador());
+        btPausaC.addActionListener(e -> pausarCazador());
+        btTerminarC.addActionListener(e -> terminarCazador());
 
         // Eventos Hilo Rebotador
         btIniciarR.addActionListener(new ActionListener() {
@@ -251,9 +227,9 @@ public class VentanaMatrizHilos extends JFrame {
     }
 
     // -----------------------------------------------------------------
-    // Métodos privados para manejo de eventos (Serpiente) //LUIS ANGEL ARVIZU RAMIREZ
+    // Métodos privados para manejo de eventos (Serpiente)
     // -----------------------------------------------------------------
-     private void iniciarSerpiente() {
+    private void iniciarSerpiente() {
         /* Solo crea un hilo nuevo si no hay uno corriendo */
         if (hser == null || !hser.isAlive()) {
             hser = new HiloSerpiente(matriz);
@@ -274,10 +250,11 @@ public class VentanaMatrizHilos extends JFrame {
             hser = null;
         }
     }
+
     // -----------------------------------------------------------------
-    // Métodos privados para manejo de eventos (Cazador) LUIS ANGEL ARVIZU RAMIREZ
+    // Métodos privados para manejo de eventos (Cazador)
     // -----------------------------------------------------------------
-       private void iniciarCazador() {
+    private void iniciarCazador() {
         /* Solo crea un hilo nuevo si no hay uno corriendo */
         if (hcaz == null || !hcaz.isAlive()) {
             hcaz = new HiloCazador(matriz);
@@ -298,80 +275,85 @@ public class VentanaMatrizHilos extends JFrame {
             hcaz = null;
         }
     }
+
     // -----------------------------------------------------------------
     // Métodos privados para manejo de eventos (Rebotador)
     // -----------------------------------------------------------------
-private void iniciarRebotador() {
-    /* Solo crea un hilo nuevo si no hay uno corriendo */
-    if (hreb == null || !hreb.isAlive()) {
-        hreb = new HiloRebotador(matriz);
-        hreb.start();
+    private void iniciarRebotador() {
+        /* Solo crea un hilo nuevo si no hay uno corriendo */
+        if (hreb == null || !hreb.isAlive()) {
+            hreb = new HiloRebotador(matriz);
+            hreb.start();
+        }
     }
-}
- 
-private void pausarRebotador() {
-    /* Pausa si estaba corriendo, o reanuda si estaba en pausa */
-    if (hreb != null) {
-        hreb.alternarPausa();
-    }
-}
- 
-private void terminarRebotador() {
-    if (hreb != null) {
-        hreb.terminar();
-        hreb = null;
-    }
-}
 
- 
+    private void pausarRebotador() {
+        /* Pausa si estaba corriendo, o reanuda si estaba en pausa */
+        if (hreb != null) {
+            hreb.alternarPausa();
+        }
+    }
+
+    private void terminarRebotador() {
+        if (hreb != null) {
+            hreb.terminar();
+            hreb = null;
+        }
+    }
+
     // -----------------------------------------------------------------
     // Métodos privados para manejo de eventos (Clima)
     // -----------------------------------------------------------------
-private void iniciarClima() {
-    /* Solo crea un hilo nuevo si no hay uno corriendo */
-    if (hcli == null || !hcli.isAlive()) {
-        hcli = new HiloClima(matriz);
-        hcli.start();
+    private void iniciarClima() {
+        /* Solo crea un hilo nuevo si no hay uno corriendo */
+        if (hcli == null || !hcli.isAlive()) {
+            hcli = new HiloClima(matriz);
+            hcli.start();
+        }
     }
-}
- 
-private void pausarClima() {
-    /* Pausa si estaba corriendo, o reanuda si estaba en pausa */
-    if (hcli != null) {
-        hcli.alternarPausa();
-    }
-}
- 
-private void terminarClima() {
-    if (hcli != null) {
-        hcli.terminar();
-        hcli = null;
-    }
-}
 
+    private void pausarClima() {
+        /* Pausa si estaba corriendo, o reanuda si estaba en pausa */
+        if (hcli != null) {
+            hcli.alternarPausa();
+        }
+    }
+
+    private void terminarClima() {
+        if (hcli != null) {
+            hcli.terminar();
+            hcli = null;
+        }
+    }
 
     // -----------------------------------------------------------------
     // Métodos privados para manejo de eventos (Limpiador)
     // -----------------------------------------------------------------
- private void iniciarLimpiador() {
-    /* Solo crea un hilo nuevo si no hay uno corriendo */   
-    if (hlim == null || !hlim.isAlive()) {
-        hlim = new HiloLimpiador(matriz);
-        hlim.start();
+    private void iniciarLimpiador() {
+        /* Solo crea un hilo nuevo si no hay uno corriendo */
+        if (hlim == null || !hlim.isAlive()) {
+            hlim = new HiloLimpiador(matriz);
+            hlim.start();
+        }
     }
-}
 
-private void pausarLimpiador() {
-    /* Pausa si estaba corriendo, o reanuda si estaba en pausa */
-    if (hlim != null) {
-        hlim.alternarPausa();
+    private void pausarLimpiador() {
+        /* Pausa si estaba corriendo, o reanuda si estaba en pausa */
+        if (hlim != null) {
+            hlim.alternarPausa();
+        }
     }
-}
 
-private void terminarLimpiador() {
-    if (hlim != null) {
-        hlim.terminar();
-        hlim = null;
+    private void terminarLimpiador() {
+        if (hlim != null) {
+            hlim.terminar();
+            hlim = null;
+        }
     }
-}
+
+    // Métodos auxiliares para acceso de los estudiantes
+    public JLabel[][] getMatrizLabels() {
+        return matriz;
+    }
+
 }
